@@ -120,7 +120,7 @@ esp_err_t esp32_wifi_eventHandler(void *ctx, system_event_t *event)
 
 void setup(){
 	ESP_ERROR_CHECK(nvs_flash_init());
-	gpio_set_direction(25, GPIO_MODE_OUTPUT);
+	adc_gpio_init(ADC_UNIT_1, ADC1_CHANNEL_6);
 	touch_pad_init();
 	touch_pad_config(0, 0);
 	adc1_config_width(ADC_WIDTH_12Bit);
@@ -139,7 +139,7 @@ void setup(){
 	      .channel=0,
 	      .authmode=WIFI_AUTH_WPA2_PSK,
 	      .ssid_hidden=0,
-	      .max_connection=2,
+	      .max_connection=10,
 	      .beacon_interval=100
 	   }
 	};
@@ -157,10 +157,10 @@ void app_main()
     while(1)
     {
     	touch_pad_read(0, &touch_value);
-    	adc_reading = adc1_get_voltage(ADC1_CHANNEL_6);
+    	adc_reading = adc1_get_raw(ADC1_CHANNEL_6);
     	if(!website_control)led = 190+adc_reading/63;
-    	if(led_an) dac_out_voltage(DAC_CHANNEL_1, led);
-    	else dac_out_voltage(DAC_CHANNEL_1, 0);
+    	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);
+    	else dac_output_voltage(DAC_CHANNEL_1, 0);
     	if(touch_value < low_trigger && state == STATE_NOT_TOUCHED)
     	{
     		state = STATE_TOUCHED;
