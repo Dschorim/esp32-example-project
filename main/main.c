@@ -8,7 +8,6 @@
 #include "driver/touch_pad.h"
 #include "driver/dac.h"
 #include "driver/adc.h"
-//#include "esp_adc_cal.h"
 #include "esp_wifi.h"
 #include <lwip/sockets.h>
 #include <lwip/def.h>
@@ -50,33 +49,19 @@ void http_server_netconn_serve(struct netconn *conn)
   uint16_t buflen;
   err_t err;
 
-  /* Read the data from the port, blocking if nothing yet there.
-   We assume the request (the part we care about) is in one netbuf */
   err = netconn_recv(conn, &inbuf);
 
   if (err == ERR_OK) {
     netbuf_data(inbuf, (void**)&buf, &buflen);
 
-    // strncpy(_mBuffer, buf, buflen);
-
-    /* Is this an HTTP GET command? (only check the first 5 chars, since
-    there are other formats for GET, and we're keeping it very simple )*/
-    //printf("buffer = %s \n", buf);
     if (buflen>=5 &&
         buf[0]=='G' &&
         buf[1]=='E' &&
         buf[2]=='T' &&
         buf[3]==' ' &&
         buf[4]=='/' ) {
-          //printf("buf[5] = %c\n", buf[5]);
-      /* Send the HTML header
-             * subtract 1 from the size, since we dont send the \0 in the string
-             * NETCONN_NOCOPY: our data is const static, so no need to copy it
-       */
 
       netconn_write(conn, http_html_hdr, sizeof(http_html_hdr)-1, NETCONN_NOCOPY);
-      //netconn_write(conn, "Hallo", sizeof("Hallo")-1, NETCONN_NOCOPY);
-
 
       if(buf[5]=='o' && !(buf[6]=='?' || buf[5]=='?'|| buf[7]=='?')) {
         if(led_an == 1) led_an=0;
@@ -106,11 +91,7 @@ void http_server_netconn_serve(struct netconn *conn)
     }
 
   }
-  /* Close the connection (server closes in HTTP) */
   netconn_close(conn);
-
-  /* Delete the buffer (netconn_recv gives us ownership,
-   so we have to make sure to deallocate the buffer) */
   netbuf_delete(inbuf);
 }
 
@@ -177,7 +158,6 @@ void app_main()
     {
     	touch_pad_read(0, &touch_value);
     	adc_reading = adc1_get_voltage(ADC1_CHANNEL_6);
-    	//printf("%d,%d,%d,%d,%d\n",adc_reading[0],adc_reading[1],adc_reading[2],adc_reading[3],adc_avg);
     	if(!website_control)led = 190+adc_reading/63;
     	if(led_an) dac_out_voltage(DAC_CHANNEL_1, led);
     	else dac_out_voltage(DAC_CHANNEL_1, 0);
@@ -192,7 +172,5 @@ void app_main()
     	{
     		state = STATE_NOT_TOUCHED;
     	}
-    	//printf("Value: %5d\n",led);
-    	//vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
