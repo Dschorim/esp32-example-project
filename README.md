@@ -4,6 +4,7 @@ Revision 0)
 
 You have to use branch "release/v2.0" of the ESP-IDF and and an older version 
 of the xtensa-toolchain, available under 
-https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz__
+https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz 
+<br />
 https://dl.espressif.com/dl/xtensa-esp32-elf-linux32-1.22.0-61-gab8375a-5.2.0.tar.gz
 
