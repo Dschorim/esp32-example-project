@@ -120,11 +120,12 @@ esp_err_t esp32_wifi_eventHandler(void *ctx, system_event_t *event)
 
 void setup(){
 	ESP_ERROR_CHECK(nvs_flash_init());
-	adc_gpio_init(ADC_UNIT_1, ADC1_CHANNEL_6);
+	dac_output_enable(DAC_CHANNEL_1);
+	adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_6);
 	touch_pad_init();
 	touch_pad_config(0, 0);
 	adc1_config_width(ADC_WIDTH_12Bit);
-	adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_0db);
+	adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_0);
 	tcpip_adapter_init();
 	ESP_ERROR_CHECK( esp_event_loop_init(esp32_wifi_eventHandler, NULL) );
 	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
