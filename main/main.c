@@ -63,15 +63,15 @@ void http_server_netconn_serve(struct netconn *conn)
 
       netconn_write(conn, http_html_hdr, sizeof(http_html_hdr)-1, NETCONN_NOCOPY);
 
-      if(buf[5]=='o' && !(buf[6]=='?' || buf[5]=='?'|| buf[7]=='?')) {
-        if(led_an == 1) led_an=0;
-        else led_an=1;
+      if(buf[5]=='o' && !(buf[6]=='b' || buf[7]=='b')) {
+    	  if(led_an == 1) led_an=0;
+    	  else led_an=1;
       }
-      else if(buf[5]=='c' && !(buf[6]=='?' || buf[5]=='?'|| buf[7]=='?')) {
-        if(website_control==1)website_control=0;
-        else website_control=1;
+      else if(buf[5]=='c' && !(buf[6]=='b' || buf[7]=='b')) {
+    	  if(website_control==1)website_control=0;
+    	  else website_control=1;
       }
-      if(buf[6]=='?' || buf[5]=='?'|| buf[7]=='?') {
+      if(buf[6]=='b' || buf[7]=='b') {
     	  led = (buf[9]-'0')*100+(buf[10]-'0')*10+(buf[11]-'0');
       }
 
