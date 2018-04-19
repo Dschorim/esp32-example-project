@@ -120,10 +120,10 @@ esp_err_t esp32_wifi_eventHandler(void *ctx, system_event_t *event)
 
 void setup(){
 	ESP_ERROR_CHECK(nvs_flash_init());
-	dac_output_enable(DAC_CHANNEL_1);
+	dac_output_enable(DAC_CHANNEL_1);	//enable dac channel X
 	adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_6);
 	touch_pad_init();
-	touch_pad_config(0, 0);
+	touch_pad_config(TOUCH_PAD_NUM0, 0);	//init touch channel X
 	adc1_config_width(ADC_WIDTH_12Bit);
 	adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_0);
 	tcpip_adapter_init();
@@ -157,11 +157,11 @@ void app_main()
 
     while(1)
     {
-    	touch_pad_read(0, &touch_value);
+    	touch_pad_read(TOUCH_PAD_NUM0, &touch_value);	//read touch value into touch_value
     	adc_reading = adc1_get_raw(ADC1_CHANNEL_6);
     	if(!website_control)led = 190+adc_reading/63;
-    	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);
-    	else dac_output_voltage(DAC_CHANNEL_1, 0);
+    	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);	//write value X
+    	else dac_output_voltage(DAC_CHANNEL_1, 0);	//write value X
     	if(touch_value < low_trigger && state == STATE_NOT_TOUCHED)
     	{
     		state = STATE_TOUCHED;
