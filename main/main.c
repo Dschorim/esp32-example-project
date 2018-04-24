@@ -37,7 +37,7 @@
 //GPIO34: Potentiometer / ADC1_6
 
 unsigned int low_trigger = 800;
-unsigned int high_trigger = 900;
+unsigned int high_trigger = 870;
 unsigned char state = 0;
 unsigned char led_an = 0;
 unsigned char led = 255;
@@ -139,7 +139,7 @@ esp_err_t esp32_wifi_eventHandler(void *ctx, system_event_t *event)
 
 void setup(){
 	ESP_ERROR_CHECK(nvs_flash_init());
-	gpio_set_direction(25, GPIO_MODE_OUTPUT);	//enable dac channel 1
+	dac_output_enable(DAC_CHANNEL_1);	//enable dac channel 1
 	touch_pad_init();
 	touch_pad_config(TOUCH_PAD_NUM0, 0);	//init touch channel 0
 	adc1_config_width(ADC_WIDTH_12Bit);
@@ -177,6 +177,7 @@ void app_main()
     {
     	touch_pad_read(0, &touch_value);	//read touch value into touch_value
     	adc_reading = adc1_get_voltage(ADC1_CHANNEL_6);
+    	printf("Value: %d\n",touch_value);
     	//printf("%d,%d,%d,%d,%d\n",adc_reading[0],adc_reading[1],adc_reading[2],adc_reading[3],adc_avg);
     	if(!website_control)led = 190+adc_reading/63;
     	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);	//write value X
@@ -192,7 +193,7 @@ void app_main()
     	{
     		state = STATE_NOT_TOUCHED;
     	}
-    	//printf("Value: %5d\n",led);
-    	//vTaskDelay(100 / portTICK_PERIOD_MS);
+    	printf("Value: %5d\n",led);
+    	vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
