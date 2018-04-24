@@ -170,7 +170,6 @@ void app_main()
 {
 	setup();
 	xTaskCreatePinnedToCore(&http_server, "http_server", 2048, NULL, 5, NULL, 1);
-    xTaskCreate()
 	uint16_t touch_value;
     uint32_t adc_reading = 0;
 
@@ -180,8 +179,8 @@ void app_main()
     	adc_reading = adc1_get_voltage(ADC1_CHANNEL_6);
     	//printf("%d,%d,%d,%d,%d\n",adc_reading[0],adc_reading[1],adc_reading[2],adc_reading[3],adc_avg);
     	if(!website_control)led = 190+adc_reading/63;
-    	if(led_an) dac_out_voltage(DAC_CHANNEL_1, led);	//write value X
-    	else dac_out_voltage(DAC_CHANNEL_1, 0);	//write value X
+    	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);	//write value X
+    	else dac_output_voltage(DAC_CHANNEL_1, 0);	//write value X
     	if(touch_value < low_trigger && state == STATE_NOT_TOUCHED)
     	{
     		state = STATE_TOUCHED;
