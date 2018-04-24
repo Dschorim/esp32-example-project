@@ -177,7 +177,7 @@ void app_main()
     {
     	touch_pad_read(0, &touch_value);	//read touch value into touch_value
     	adc_reading = adc1_get_voltage(ADC1_CHANNEL_6);
-    	printf("Value: %d\n",touch_value);
+    	//printf("Value: %d\n",touch_value);
     	//printf("%d,%d,%d,%d,%d\n",adc_reading[0],adc_reading[1],adc_reading[2],adc_reading[3],adc_avg);
     	if(!website_control)led = 190+adc_reading/63;
     	if(led_an) dac_output_voltage(DAC_CHANNEL_1, led);	//write value X
@@ -193,7 +193,7 @@ void app_main()
     	{
     		state = STATE_NOT_TOUCHED;
     	}
-    	printf("Value: %5d\n",led);
-    	vTaskDelay(100 / portTICK_PERIOD_MS);
+    	//printf("Value: %5d\n",led);
+    	//vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
